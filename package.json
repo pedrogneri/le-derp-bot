@@ -19,6 +19,7 @@
   "homepage": "https://github.com/pedrogneri/twitter-bot#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "readline-sync": "^1.4.9",
     "sharp": "^0.22.1",
     "twit": "^2.2.11"
