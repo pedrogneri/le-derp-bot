@@ -26,9 +26,10 @@ function makeMediaTweet(text, compositeImage){
           var params = { status: text, media_ids: [mediaIdStr] }
      
           T.post('statuses/update', params, function (err, data, response) {
-            console.log(data)
+            console.log(!err ? 'Tweet feito com sucesso!' : 'Erro ao postar o tweet: ' + err)
           })
-        }
+        } else 
+            console.log('erro ao upar mídia para o twitter: ' + err)
       })
     })
 }
