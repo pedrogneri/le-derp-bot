@@ -1,4 +1,3 @@
-const express = require('express')
 const mongoose = require('mongoose')
 require('../models/source')
 const Source = mongoose.model('sources')
