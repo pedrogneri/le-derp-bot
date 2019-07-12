@@ -58,7 +58,7 @@ async function getImageFileNames(){
 }
 
 async function downloadSources(){
-    const sources = await sourceService.requestAllSources()
-    for(var x=0; x < sources.length; x++)
-      imageBot.convertBufferToFile(sources[x].buffer, 'source-' + x + '.png')
+  const sources = await sourceService.requestAllSources()
+  for(var x=0; x < sources.length; x++)
+    imageBot.convertBufferToFile(sources[x].buffer, 'source-' + x + '.png')
 }
