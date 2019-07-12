@@ -22,12 +22,15 @@
     },
     {
         "width": 1220,
-        "height": 310,
+        "height": 615,
         "composite":
         [
             { "input": null, "top": 5, "left": 5 }, 
             { "input": null, "top": 5, "left": 410 }, 
-            { "input": null, "top": 5, "left": 815 }
+            { "input": null, "top": 5, "left": 815 },
+            { "input": null, "top": 310, "left": 5 }, 
+            { "input": null, "top": 310, "left": 410 }, 
+            { "input": null, "top": 310, "left": 815 }
         ]
     }
 ]

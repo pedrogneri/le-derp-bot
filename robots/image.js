@@ -1,6 +1,10 @@
+const mongoose = require('mongoose')
+require('../models/source')
+const Source = mongoose.model('sources')
+
 const sharp = require('sharp')
 const templates = require('../data/templates.json')
-const fs = require('fs')
+const fs = require('fs') 
 
 function robot(){
     compositeTirinhaMeme()
@@ -15,7 +19,7 @@ function resizeImage(number){
 }
 
 async function compositeTirinhaMeme(){
-    const template = templates[generateRandomImageNumber(0, 2)]
+    const template = templates[generateRandomImageNumber(0, 3)]
     const templateImage = await sharp({
         create: {
           width: template.width,
@@ -25,8 +29,9 @@ async function compositeTirinhaMeme(){
         }
     }).png().toBuffer()
 
+    const sourceImages = await Source.aggregate([ { $sample: { size: template.composite.length } } ])
     for(var x = 0; x < template.composite.length; x++)
-        template.composite[x].input = 'images/_meme' + generateRandomImageNumber(1, 11) + '.png'
+        template.composite[x].input = sourceImages[x].buffer.buffer
 
     sharp(templateImage)
     .composite(template.composite)
@@ -35,7 +40,7 @@ async function compositeTirinhaMeme(){
     .png( { quality: 90 } )
     .toBuffer()
     .then((outputBuffer) => {
-        sharp(outputBuffer).toFile('images/output-test.jpg', (err) => {
+        sharp(outputBuffer).toFile('images/output.jpg', (err) => {
         if(!err)
             console.log('Buffer convertido para arquivo com sucesso')
         else 
