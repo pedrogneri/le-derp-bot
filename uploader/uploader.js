@@ -7,7 +7,7 @@ const app = express()
 
 async function insertNewSource(bufferImage){
     await new Source({ buffer: bufferImage }).save()
-    console.log('Inseriu com sucesso')
+    console.log('Imagem inserida com sucesso')
 }
 
 mongoose.Promise = global.Promise;
