@@ -1,15 +1,18 @@
 const twitterBot = require('./robots/twitter.js')
 const imageBot = require('./robots/image.js')
-const uploader = require('./uploader/uploader')
+const sourceService = require('./services/sourceService')
 const readline = require('readline-sync')
 const fs = require('fs')
 
+start()
+
 async function start(){
-  const options = [ 'Make a tweet', 'Upload source images']
+  const options = [ 'Make a tweet', 'Upload source images', 'Download sources']
   const selectedOption = await readline.keyInSelect(options, 'Choose one option: ') + 1
 
   if(selectedOption == 1) await tweetImage()
-  else if(selectedOption == 2) await uploadSources()
+  else if(selectedOption == 2) await insertSources()
+  else if(selectedOption == 3) await downloadSources()
   else process.exit(0)
 }
 
@@ -18,18 +21,19 @@ async function tweetImage(){
   await twitterBot.makeMediaTweet()
 }
 
-async function uploadSources(){
+async function insertSources(){
   const fileNames = await getImageFileNames()
   for(var x=0; x < fileNames.length; x++){
     const resizedImageBuffer = await imageBot.resizeImage(fileNames[x])
-    await uploader(resizedImageBuffer)
+    await sourceService.insertNewSource(resizedImageBuffer)
     deleteImage(fileNames[x])
   }
 }
 
 function deleteImage(fileName){
   fs.unlink('./images/' + fileName, (err) => {
-    console.log(!err ? 'Imagem excluida com sucesso!' : 'Erro ao excluir imagem: ' + err)
+    if(!err) console.log('\x1b[32m', 'Imagem excluida com sucesso!')
+    else console.log('\x1b[31m', 'Erro ao excluir imagem: ' + err)
   })
 }
 
@@ -53,4 +57,8 @@ async function getImageFileNames(){
   return imageFiles
 }
 
-start()
+async function downloadSources(){
+    const sources = await sourceService.requestAllSources()
+    for(var x=0; x < sources.length; x++)
+      imageBot.convertBufferToFile(sources[x].buffer, 'source-' + x + '.png')
+}

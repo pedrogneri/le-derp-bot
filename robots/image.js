@@ -20,9 +20,7 @@ async function compositeImage(){
         .png( { quality: 90 } )
         .toBuffer()
 
-    sharp(outputBuffer).toFile('images/output.jpg', (err) => {
-        console.log(!err ? 'Buffer convertido para arquivo com sucesso' : 'Erro ao converter buffer para arquivo: ' + err) 
-    })
+    convertBufferToFile(outputBuffer ,'output.jpg')
     await sleep(200)
 }
 
@@ -43,6 +41,13 @@ async function generateTemplateImage(templateConfigs){
     }).png().toBuffer()
 }
 
+async function convertBufferToFile(buffer, fileName){
+    await sharp(buffer).toFile('images/' + fileName, (err) => {
+        if(!err) console.log('\x1b[32m', 'Buffer convertido para arquivo com sucesso')
+        else console.log('\x1b[31m', 'Erro ao converter buffer para arquivo: ' + err)
+    })
+}
+
 function generateRandomInteger(min, max){
     return Math.floor(Math.random() * (max - min) + min)
 }
@@ -51,4 +56,4 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-module.exports = {compositeImage, resizeImage}
+module.exports = {compositeImage, resizeImage, convertBufferToFile}

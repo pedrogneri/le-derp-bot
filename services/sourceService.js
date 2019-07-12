@@ -10,6 +10,10 @@ async function insertNewSource(bufferImage){
     console.log('Imagem inserida com sucesso')
 }
 
+async function requestAllSources(){
+    return await Source.find()
+}
+
 mongoose.Promise = global.Promise;
         mongoose.connect('mongodb://localhost/twitter-bot', {
             useNewUrlParser: true 
@@ -24,4 +28,4 @@ app.listen(PORT, () => {
     console.log('Servidor rodando...')
 })
 
-module.exports = insertNewSource
+module.exports = {insertNewSource, requestAllSources}

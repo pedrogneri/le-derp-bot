@@ -18,10 +18,11 @@ async function makeMediaTweet(){
           var params = { status: "", media_ids: [mediaIdStr] }
      
           T.post('statuses/update', params, function (err, data, response) {
-            console.log(!err ? 'Tweet feito com sucesso!' : 'Erro ao postar o tweet: ' + err)
+            if(!err) console.log('\x1b[32m', 'Tweet feito com sucesso!')
+            else console.log('\x1b[31m', 'Erro ao postar o tweet: ' + err)
           })
         } else 
-            console.log('erro ao upar mídia para o twitter: ' + err)
+            console.log('\x1b[31m', 'Erro ao upar mídia para o twitter: ' + err)
       })
     })
 }
