@@ -3,8 +3,6 @@ const mongoose = require('mongoose')
 require('../models/source')
 const Source = mongoose.model('sources')
 
-const app = express()
-
 async function insertNewSource(bufferImage){
     await new Source({ buffer: bufferImage }).save()
     console.log('Imagem inserida com sucesso')
@@ -15,17 +13,12 @@ async function requestAllSources(){
 }
 
 mongoose.Promise = global.Promise;
-        mongoose.connect('mongodb://localhost/twitter-bot', {
+        mongoose.connect('mongodb+srv://user:1234@twitter-bot-z8lst.mongodb.net/le-bot?retryWrites=true&w=majority', {
             useNewUrlParser: true 
         }).then(() => {
             console.log('Conectado ao mongodb')
         }).catch((err) => {
             console.log('Houve algum erro: ' + err)
         })
-
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-    console.log('Servidor rodando...')
-})
 
 module.exports = {insertNewSource, requestAllSources}

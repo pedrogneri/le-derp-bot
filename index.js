@@ -7,7 +7,7 @@ const fs = require('fs')
 start()
 
 async function start(){
-  const options = [ 'Make a tweet', 'Upload source images', 'Download sources']
+  const options = [ 'Make a tweet', 'Upload source images', 'Download sources' ]
   const selectedOption = await readline.keyInSelect(options, 'Choose one option: ') + 1
 
   if(selectedOption == 1) await tweetImage()
@@ -52,7 +52,7 @@ async function getImageFileNames(){
   const imageFiles = await readdir('./images/')
   for(var x=0; x < imageFiles.length; x++){
     if(imageFiles[x].split('.').pop() != 'png')
-    imageFiles.splice(x, 1)
+      imageFiles.splice(x, 1)
   }
   return imageFiles
 }
