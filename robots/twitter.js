@@ -7,22 +7,24 @@ const T = new Twit(credentials)
 
 async function makeMediaTweet(){
     const b64Image = fs.readFileSync('images/output.jpg', { encoding: 'base64' })
+    const date = new Date()
 
-    await T.post('media/upload', { media_data: b64Image }, function (err, data, response) {
+    await T.post('media/upload', { media_data: b64Image }, (err, data, response) => {
       var mediaIdStr = data.media_id_string
       var altText = "Imagem gerada automaticamente"
       var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
      
-      T.post('media/metadata/create', meta_params, function (err, data, response) {
+      T.post('media/metadata/create', meta_params, (err, data, response) => {
         if (!err) {
           var params = { status: "", media_ids: [mediaIdStr] }
      
-          T.post('statuses/update', params, function (err, data, response) {
-            if(!err) console.log('\x1b[32m', 'Tweet feito com sucesso!')
-            else console.log('\x1b[31m', 'Erro ao postar o tweet: ' + err)
+          T.post('statuses/update', params, (err, data, response) => {
+            if(!err) console.log('Tweet feito com sucesso!')
+            else console.log('Erro ao postar o tweet: ' + err)
+            console.log("Tweet feito em: " + date.getHours() + ':' + date.getMinutes())
           })
         } else 
-            console.log('\x1b[31m', 'Erro ao upar mídia para o twitter: ' + err)
+            console.log('Erro ao upar mídia para o twitter: ' + err)
       })
     })
 }
