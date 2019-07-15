@@ -5,20 +5,28 @@ const readline = require('readline-sync')
 const fs = require('fs')
 
 start()
-
+// TODO: fix upload jpg error
 async function start(){
-  const options = [ 'Make a tweet', 'Upload source images', 'Download sources' ]
-  const selectedOption = await readline.keyInSelect(options, 'Choose one option: ') + 1
+  const options = [ 'Turn on auto tweet', 'Make a tweet', 'Upload source images', 'Download sources' ]
+  const selectedOption = process.argv[2] !== null ? process.argv[2] : await readline.keyInSelect(options, 'Choose one option: ') + 1
 
-  if(selectedOption == 1) await tweetImage()
-  else if(selectedOption == 2) await insertSources()
-  else if(selectedOption == 3) await downloadSources()
+  if(selectedOption == 1) await autoTweet()
+  else if(selectedOption == 2) await tweetImage()
+  else if(selectedOption == 3) await insertSources()
+  else if(selectedOption == 4) await downloadSources()
   else process.exit(0)
 }
 
 async function tweetImage(){
   await imageBot.compositeImage()
   await twitterBot.makeMediaTweet()
+}
+
+async function autoTweet(){
+  const tweetInterval = 120 * 60000
+  const date = new Date()
+  console.log('Iniciado em: ' + date.getHours() + ':' + date.getMinutes())
+  await setInterval(() => {tweetImage()}, tweetInterval)
 }
 
 async function insertSources(){
@@ -32,8 +40,8 @@ async function insertSources(){
 
 function deleteImage(fileName){
   fs.unlink('./images/' + fileName, (err) => {
-    if(!err) console.log('\x1b[32m', 'Imagem excluida com sucesso!')
-    else console.log('\x1b[31m', 'Erro ao excluir imagem: ' + err)
+    if(!err) console.log('Imagem excluida com sucesso!')
+    else console.log('Erro ao excluir imagem: ' + err)
   })
 }
 
@@ -49,16 +57,25 @@ function readdir(path){
 }
 
 async function getImageFileNames(){
-  const imageFiles = await readdir('./images/')
-  for(var x=0; x < imageFiles.length; x++){
-    if(imageFiles[x].split('.').pop() != 'png')
+  const imageFiles = await readdir('./images')
+  imageFiles.splice(imageFiles.indexOf('output.jpg'))
+
+  for(var x = 0; x < imageFiles.length; x++)
+    if(extension(imageFiles[x]) !== 'png')
       imageFiles.splice(x, 1)
-  }
+
   return imageFiles
 }
 
 async function downloadSources(){
   const sources = await sourceService.requestAllSources()
-  for(var x=0; x < sources.length; x++)
-    imageBot.convertBufferToFile(sources[x].buffer, 'source-' + x + '.png')
+  sources.forEach(source => {
+    imageBot.convertBufferToFile(source.buffer, source._id + '.png')
+  })
+}
+
+function extension(fileName) {
+  const path = './images/' + fileName
+  var idx = (~-path.lastIndexOf(".") >>> 0) + 2;
+  return path.substr((path.lastIndexOf("/") - idx > -3 ? -1 >>> 0 : idx));
 }
