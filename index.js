@@ -8,7 +8,7 @@ start()
 // TODO: fix upload jpg error
 async function start(){
   const options = [ 'Turn on auto tweet', 'Make a tweet', 'Upload source images', 'Download sources' ]
-  const selectedOption = process.argv[2] !== null ? process.argv[2] : await readline.keyInSelect(options, 'Choose one option: ') + 1
+  const selectedOption = process.argv[2] != null ? process.argv[2] : await readline.keyInSelect(options, 'Choose one option: ') + 1
 
   if(selectedOption == 1) await autoTweet()
   else if(selectedOption == 2) await tweetImage()
