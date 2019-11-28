@@ -1,4 +1,5 @@
-# twitter-bot
+<img src="https://i.imgur.com/22mEpzx.png" height="300px" align="center"/>  
+
 ![GitHub](https://img.shields.io/github/license/pedrogneri/twitter-bot.svg) 
 [![Twitter Follow](https://img.shields.io/twitter/follow/le_derp_bot.svg?label=Seguir%20le_derp_bot&style=social)](https://twitter.com/le_derp_bot)
 
