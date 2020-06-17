@@ -5,15 +5,15 @@ const fs = require('fs')
 
 const T = new Twit(credentials)
 
-async function makeMediaTweet(){
+function makeMediaTweet(){
     const b64Image = fs.readFileSync('output/output.jpg', { encoding: 'base64' })
     const date = new Date()
 
-    await T.post('media/upload', { media_data: b64Image }, (err, data, response) => {
+    T.post('media/upload', { media_data: b64Image }, (err, data, response) => {
       var mediaIdStr = data.media_id_string
       var altText = "Imagem gerada automaticamente"
       var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
-     
+
       T.post('media/metadata/create', meta_params, (err, data, response) => {
         if (!err) {
           var params = { status: "", media_ids: [mediaIdStr] }

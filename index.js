@@ -1,33 +1,39 @@
 const twitterBot = require('./robots/twitter.js')
 const imageBot = require('./robots/image.js')
 const sourceService = require('./services/sourceService')
-const readline = require('readline-sync')
 const mkdirp = require('mkdirp')
 const fs = require('fs')
 
-start()
-// TODO: fix upload jpg error
-async function start(){
-  const options = [ 'Turn on auto tweet', 'Make a tweet', 'Upload source images', 'Download sources' ]
-  const selectedOption = process.argv[2] != null ? process.argv[2] : await readline.keyInSelect(options, 'Choose one option: ') + 1
+var express = require('express');
+var app = express();
 
-  if(selectedOption == 1) await autoTweet()
-  else if(selectedOption == 2) await tweetImage()
-  else if(selectedOption == 3) await insertSources()
-  else if(selectedOption == 4) await downloadSources()
-  else process.exit(0)
-}
+app.get('/tweet', (req, res) => {
+  tweetImage().then(() => {
+    res.status(200).send({ message: 'tweet postado com sucesso!' })
+  }).catch((err) => {
+    res.status(500).send({ error: err });
+  })
+});
+
+app.get('/autoTweet', (req, res) => {
+  autoTweet();
+  res.status(200).send({ message: 'auto tweet turned on' })
+});
+
+app.listen(3000, () => {
+  console.log('Le derp bot listening on port 3000!');
+});
 
 async function tweetImage(){
   await imageBot.compositeImage()
-  await twitterBot.makeMediaTweet()
+  twitterBot.makeMediaTweet()
 }
 
-async function autoTweet(){
-  const tweetInterval = 120 * 60000
+function autoTweet(){
+  const tweetInterval = 120 * 6000
   const date = new Date()
   console.log('Iniciado em: ' + date.getHours() + ':' + date.getMinutes())
-  await setInterval(() => {tweetImage()}, tweetInterval)
+  setInterval(() => {tweetImage()}, tweetInterval)
 }
 
 async function insertSources(){
