@@ -2,6 +2,7 @@ const twitterBot = require('./robots/twitter.js')
 const imageBot = require('./robots/image.js')
 const sourceService = require('./services/sourceService')
 const readline = require('readline-sync')
+const mkdirp = require('mkdirp')
 const fs = require('fs')
 
 start()
@@ -39,7 +40,7 @@ async function insertSources(){
 }
 
 function deleteImage(fileName){
-  fs.unlink('./images/' + fileName, (err) => {
+  fs.unlink('./output/' + fileName, (err) => {
     if(!err) console.log('Imagem excluida com sucesso!')
     else console.log('Erro ao excluir imagem: ' + err)
   })
@@ -69,13 +70,21 @@ async function getImageFileNames(){
 
 async function downloadSources(){
   const sources = await sourceService.requestAllSources()
+  createPath('output/sourcesBackup')
   sources.forEach(source => {
-    imageBot.convertBufferToFile(source.buffer, source._id + '.png')
+    imageBot.convertBufferToFile(source.buffer, 'sourcesBackup/' + source._id + '.png')
+  })
+}
+
+function createPath(pathName){
+  mkdirp('./' + pathName, function (err) {
+    if (err) console.error(err)
+    else console.log('Pasta ' + pathName + ' criada com sucesso')
   })
 }
 
 function extension(fileName) {
-  const path = './images/' + fileName
+  const path = './output/' + fileName
   var idx = (~-path.lastIndexOf(".") >>> 0) + 2;
   return path.substr((path.lastIndexOf("/") - idx > -3 ? -1 >>> 0 : idx));
 }

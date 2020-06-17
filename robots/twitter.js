@@ -6,7 +6,7 @@ const fs = require('fs')
 const T = new Twit(credentials)
 
 async function makeMediaTweet(){
-    const b64Image = fs.readFileSync('images/output.jpg', { encoding: 'base64' })
+    const b64Image = fs.readFileSync('output/output.jpg', { encoding: 'base64' })
     const date = new Date()
 
     await T.post('media/upload', { media_data: b64Image }, (err, data, response) => {

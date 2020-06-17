@@ -4,7 +4,7 @@ const Source = mongoose.model('sources')
 const sharp = require('sharp')
 
 async function resizeImage(fileName){
-    return await sharp('images/' + fileName).resize(400, 300).toBuffer()
+    return await sharp('output/' + fileName).resize(400, 300).toBuffer()
 }
 
 async function compositeImage(){
@@ -41,7 +41,7 @@ async function generateTemplateImage(templateConfigs){
 }
 
 async function convertBufferToFile(buffer, fileName){
-    await sharp(buffer).toFile('images/' + fileName, (err) => {
+    await sharp(buffer).toFile('output/' + fileName, (err) => {
         if(!err) console.log('Buffer convertido para arquivo com sucesso')
         else console.log('Erro ao converter buffer para arquivo: ' + err)
     })

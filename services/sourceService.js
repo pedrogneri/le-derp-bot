@@ -13,7 +13,8 @@ async function requestAllSources(){
 
 mongoose.Promise = global.Promise;
         mongoose.connect('mongodb+srv://user:1234@twitter-bot-z8lst.mongodb.net/le-bot?retryWrites=true&w=majority', {
-            useNewUrlParser: true 
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         }).then(() => {
             console.log('Conectado ao mongodb')
         }).catch((err) => {
