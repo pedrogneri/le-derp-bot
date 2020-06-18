@@ -8,11 +8,12 @@ var express = require('express');
 var app = express();
 
 app.get('/tweet', (req, res) => {
-  tweetImage().then(() => {
-    res.status(200).send({ message: 'tweet postado com sucesso!' })
-  }).catch((err) => {
-    res.status(500).send({ error: err });
-  })
+  // tweetImage().then(() => {
+  //   res.status(200).send({ message: 'tweet postado com sucesso!' })
+  // }).catch((err) => {
+  //   res.status(500).send({ error: err });
+  // })
+  res.send("aloo");
 });
 
 app.get('/autoTweet', (req, res) => {
@@ -22,7 +23,7 @@ app.get('/autoTweet', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
+  console.log(`Our app is running on port ${ PORT }`);
 });
 
 async function tweetImage(){
