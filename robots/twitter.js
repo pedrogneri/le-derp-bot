@@ -1,9 +1,14 @@
 const Twit = require('twit')
-const credentials = require('../credentials/twit')
 const readLine = require('readline-sync')
 const fs = require('fs')
+require('dotenv').config()
 
-const T = new Twit(credentials)
+const T = new Twit({
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token: process.env.ACCESS_TOKEN,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
+})
 
 function makeMediaTweet(){
     const b64Image = fs.readFileSync('output/output.jpg', { encoding: 'base64' })
