@@ -10,8 +10,8 @@ const T = new Twit({
   access_token_secret: process.env.ACCESS_TOKEN_SECRET
 })
 
-function makeMediaTweet(){
-    const b64Image = fs.readFileSync('output/output.jpg', { encoding: 'base64' })
+function makeMediaTweet(buffer){
+    const b64Image = buffer.toString('base64');
     const date = new Date()
 
     T.post('media/upload', { media_data: b64Image }, (err, data, response) => {

@@ -12,15 +12,12 @@ async function compositeImage(){
     const templateImage = await generateTemplateImage(templateConfigs)
     await requestSourceImages(templateConfigs)
  
-    const outputBuffer = await sharp(templateImage)
+    return await sharp(templateImage)
         .composite(templateConfigs.composite)
         .sharpen()
         .withMetadata()
         .png( { quality: 100 } )
         .toBuffer()
-
-    convertBufferToFile(outputBuffer ,'output.jpg')
-    await sleep(3000)
 }
 
 async function requestSourceImages(templateConfigs){

@@ -21,8 +21,8 @@ app.get('/autoTweet', (req, res) => {
 });
 
 async function tweetImage(){
-  await imageBot.compositeImage()
-  twitterBot.makeMediaTweet()
+  const imageBuffer = await imageBot.compositeImage()
+  twitterBot.makeMediaTweet(imageBuffer)
 }
 
 function autoTweet(){
