@@ -8,22 +8,16 @@ var express = require('express');
 var app = express();
 
 app.get('/tweet', (req, res) => {
-  // tweetImage().then(() => {
-  //   res.status(200).send({ message: 'tweet postado com sucesso!' })
-  // }).catch((err) => {
-  //   res.status(500).send({ error: err });
-  // })
-  res.send("aloo");
+  tweetImage().then(() => {
+    res.status(200).send({ message: 'tweet postado com sucesso!' })
+  }).catch((err) => {
+    res.status(500).send({ error: err });
+  })
 });
 
 app.get('/autoTweet', (req, res) => {
   autoTweet();
   res.status(200).send({ message: 'auto tweet turned on' })
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Our app is running on port ${ PORT }`);
 });
 
 async function tweetImage(){
@@ -96,3 +90,6 @@ function extension(fileName) {
   var idx = (~-path.lastIndexOf(".") >>> 0) + 2;
   return path.substr((path.lastIndexOf("/") - idx > -3 ? -1 >>> 0 : idx));
 }
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);
