@@ -1,6 +1,4 @@
 const Twit = require('twit')
-const readLine = require('readline-sync')
-const fs = require('fs')
 require('dotenv').config()
 
 const T = new Twit({
@@ -34,4 +32,4 @@ function makeMediaTweet(buffer){
     })
 }
 
-module.exports = {makeMediaTweet}
+module.exports = { makeMediaTweet }

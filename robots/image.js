@@ -69,8 +69,4 @@ function generateRandomInteger(min, max){
     return Math.floor(Math.random() * (max - min) + min)
 }
 
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
-module.exports = {compositeImage, resizeImage, convertBufferToFile}
+module.exports = { compositeImage, resizeImage, convertBufferToFile }

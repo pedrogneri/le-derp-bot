@@ -4,21 +4,7 @@ const sourceService = require('./services/sourceService')
 const mkdirp = require('mkdirp')
 const fs = require('fs')
 
-var express = require('express');
-var app = express();
-
-app.get('/tweet', (req, res) => {
-  tweetImage().then(() => {
-    res.status(200).send({ message: 'tweet postado com sucesso!' })
-  }).catch((err) => {
-    res.status(500).send({ error: err });
-  })
-});
-
-app.get('/autoTweet', (req, res) => {
-  autoTweet();
-  res.status(200).send({ message: 'auto tweet turned on' })
-});
+autoTweet();
 
 async function tweetImage(){
   const imageBuffer = await imageBot.compositeImage()
@@ -26,10 +12,10 @@ async function tweetImage(){
 }
 
 function autoTweet(){
-  const tweetInterval = 120 * 6000
+  const tweetInterval = 30 * 60 * 1000
   const date = new Date()
   console.log('Iniciado em: ' + date.getHours() + ':' + date.getMinutes())
-  setInterval(() => {tweetImage()}, tweetInterval)
+  setInterval(() => tweetImage(), tweetInterval)
 }
 
 async function insertSources(){
@@ -90,6 +76,3 @@ function extension(fileName) {
   var idx = (~-path.lastIndexOf(".") >>> 0) + 2;
   return path.substr((path.lastIndexOf("/") - idx > -3 ? -1 >>> 0 : idx));
 }
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT);
