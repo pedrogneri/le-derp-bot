@@ -12,7 +12,7 @@ async function tweetImage(){
 }
 
 function autoTweet(){
-  const tweetInterval = 30 * 60 * 1000
+  const tweetInterval = 60 * 60 * 1000
   const date = new Date()
   console.log('Iniciado em: ' + date.getHours() + ':' + date.getMinutes())
   setInterval(() => tweetImage(), tweetInterval)
