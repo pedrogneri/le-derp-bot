@@ -7,13 +7,11 @@ Uma aplicação que gera tirinhas meme formadas por sources aleatórias de tirin
 **Tratamento de imagens:** [sharp](https://github.com/lovell/sharp)  
 **Postagem no twitter:** [twit](https://github.com/ttezel/twit)
 
-### Credentials format
-As credenciais são geradas por dev.twitter.com
+### Environment keys
+Credenciais do dev.twitter.com
 ```
-{
-    consumer_key: '...',
-    consumer_secret: '...',
-    access_token: '...',
-    access_token_secret: '...'
-}
+CONSUMER_KEY: '...',
+CONSUMER_SECRET: '...',
+ACCESS_TOKEN: '...',
+ACCESS_TOKEN_SECRET: '...'
 ```
