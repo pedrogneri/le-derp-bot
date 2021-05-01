@@ -12,13 +12,14 @@ async function requestAllSources(){
 }
 
 mongoose.Promise = global.Promise;
-        mongoose.connect('mongodb+srv://user:1234@twitter-bot-z8lst.mongodb.net/le-bot?retryWrites=true&w=majority', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        }).then(() => {
-            console.log('Conectado ao mongodb')
-        }).catch((err) => {
-            console.log('Houve algum erro: ' + err)
-        })
 
-module.exports = {insertNewSource, requestAllSources}
+mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Conectado ao mongodb')
+}).catch((err) => {
+    console.log('Houve algum erro: ' + err)
+})
+
+module.exports = { insertNewSource, requestAllSources }
