@@ -12,21 +12,26 @@ async function resizeImage(fileName){
 }
 
 async function compositeImage(){
-    const xSize = generateRandomInteger(1, 4);
-    const ySize = generateRandomInteger(1, 4);
+    const xSize = generateRandomInteger(1, 4)
+    const ySize = generateRandomInteger(1, 4)
     const templateConfigs = generateTemplateConfigs(xSize, ySize)
     const templateImage = await generateTemplateImage(templateConfigs)
     await requestSourceImages(templateConfigs)
- 
-    return await sharp(templateImage)
-        .composite(templateConfigs.composite)
-        .sharpen()
-        .withMetadata()
-        .png({ quality: 100 })
-        .toBuffer()
+
+    console.log('Gerando imagem...')
+    const imageBuffer = await sharp(templateImage)
+            .composite(templateConfigs.composite)
+            .sharpen()
+            .withMetadata()
+            .png({ quality: 100 })
+            .toBuffer()
+
+    console.log('Imagem gerada com sucesso')
+    return imageBuffer
 }
 
 async function requestSourceImages(templateConfigs){
+    console.log('Procurando sources...')
     const sourceImages = await Source.aggregate([ { $sample: { size: templateConfigs.composite.length } } ])
     for(let x = 0; x < templateConfigs.composite.length; x++)
         templateConfigs.composite[x].input = sourceImages[x].buffer.buffer
