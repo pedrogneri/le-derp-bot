@@ -1,14 +1,20 @@
 const mongoose = require('mongoose')
 require('../models/source')
+
 const Source = mongoose.model('sources')
 const sharp = require('sharp')
 
+const CELL_WIDTH = 400;
+const CELL_HEIGHT = 300;
+
 async function resizeImage(fileName){
-    return await sharp('output/' + fileName).resize(400, 300).toBuffer()
+    return await sharp('output/' + fileName).resize(CELL_WIDTH, CELL_HEIGHT).toBuffer()
 }
 
 async function compositeImage(){
-    const templateConfigs = generateTemplateConfigs(generateRandomInteger(1, 4), generateRandomInteger(1, 4))
+    const xSize = generateRandomInteger(1, 4);
+    const ySize = generateRandomInteger(1, 4);
+    const templateConfigs = generateTemplateConfigs(xSize, ySize)
     const templateImage = await generateTemplateImage(templateConfigs)
     await requestSourceImages(templateConfigs)
  
@@ -46,18 +52,19 @@ function convertBufferToFile(buffer, fileName){
 
 function generateTemplateConfigs(xCells, yCells){
     const template = {
-        width: calculateImageConfigs(xCells, 400),
-        height: calculateImageConfigs(yCells, 300),
+        width: calculateImageConfigs(xCells, CELL_WIDTH),
+        height: calculateImageConfigs(yCells, CELL_HEIGHT),
         composite: []
     }
 
     for(let x=0; x < xCells; x++){
-        const leftCoordinate = calculateImageConfigs(x, 400)
+        const leftCoordinate = calculateImageConfigs(x, CELL_WIDTH)
         for(let y=0; y < yCells; y++){
-            const topCoordinate = calculateImageConfigs(y, 300)
+            const topCoordinate = calculateImageConfigs(y, CELL_HEIGHT)
             template.composite.push({ input: null, top: topCoordinate, left: leftCoordinate })
         }
     }
+
     return template
 }
 
