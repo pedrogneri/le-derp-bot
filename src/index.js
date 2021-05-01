@@ -1,5 +1,5 @@
-const twitterBot = require('./robots/twitter.js')
-const imageBot = require('./robots/image.js')
+const twitterBot = require('./bots/twitter.js')
+const imageBot = require('./bots/image.js')
 const sourceService = require('./services/sourceService')
 const mkdirp = require('mkdirp')
 const fs = require('fs')
