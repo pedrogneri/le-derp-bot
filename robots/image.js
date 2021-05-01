@@ -16,13 +16,13 @@ async function compositeImage(){
         .composite(templateConfigs.composite)
         .sharpen()
         .withMetadata()
-        .png( { quality: 100 } )
+        .png({ quality: 100 })
         .toBuffer()
 }
 
 async function requestSourceImages(templateConfigs){
     const sourceImages = await Source.aggregate([ { $sample: { size: templateConfigs.composite.length } } ])
-    for(var x = 0; x < templateConfigs.composite.length; x++)
+    for(let x = 0; x < templateConfigs.composite.length; x++)
         templateConfigs.composite[x].input = sourceImages[x].buffer.buffer
 }
 
@@ -37,8 +37,8 @@ async function generateTemplateImage(templateConfigs){
     }).png().toBuffer()
 }
 
-async function convertBufferToFile(buffer, fileName){
-    await sharp(buffer).toFile('output/' + fileName, (err) => {
+function convertBufferToFile(buffer, fileName){
+    sharp(buffer).toFile('output/' + fileName, (err) => {
         if(!err) console.log('Buffer convertido para arquivo com sucesso')
         else console.log('Erro ao converter buffer para arquivo: ' + err)
     })
@@ -51,11 +51,11 @@ function generateTemplateConfigs(xCells, yCells){
         composite: []
     }
 
-    for(var x=0; x < xCells; x++){
-        const leftCooordinate = calculateImageConfigs(x, 400)
-        for(var y=0; y < yCells; y++){
+    for(let x=0; x < xCells; x++){
+        const leftCoordinate = calculateImageConfigs(x, 400)
+        for(let y=0; y < yCells; y++){
             const topCoordinate = calculateImageConfigs(y, 300)
-            template.composite.push({ input: null, top: topCoordinate, left: leftCooordinate })
+            template.composite.push({ input: null, top: topCoordinate, left: leftCoordinate })
         }
     }
     return template
